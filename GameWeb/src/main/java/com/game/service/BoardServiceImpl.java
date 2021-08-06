@@ -7,11 +7,12 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.game.domain.BoardVO;
+import com.game.domain.Criteria;
 import com.game.persistence.BoardDAO;
 
 @Service
 public class BoardServiceImpl implements BoardService {
-	
+
 	@Inject
 	private BoardDAO boardDAO;
 
@@ -25,9 +26,15 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardVO> selectBoards() throws Exception {
+	public List<BoardVO> selectBoards(Criteria cri) throws Exception {
 		
-		return boardDAO.selectBoards();
+		return boardDAO.selectBoards(cri);
+	}
+	
+	@Override
+	public int listCountCriteria(Criteria cri) throws Exception {
+		
+		return boardDAO.countPaging(cri);
 	}
 
 	@Override
@@ -40,6 +47,12 @@ public class BoardServiceImpl implements BoardService {
 	public int addViews(int board_num) throws Exception {
 		
 		return boardDAO.addViews(board_num);
+	}
+
+	@Override
+	public int deleteBoard(int board_num) throws Exception {
+		
+		return boardDAO.deleteBoard(board_num);
 	}
 
 }

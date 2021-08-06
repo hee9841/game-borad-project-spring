@@ -77,10 +77,22 @@
 		                                    </tbody>
 		                                </table>
 		                                
-		                                <!-- 목록 버튼 -->
-		                                <a href="/board/showList.do" class="btn btn-primary btn-circle">
-	                                        <i class="fas fa-list"></i>
-	                                    </a>
+		                                <div class="text-right">
+		                                    <c:if test="${sessionScope.userInfo.user_id == board.user_id}">
+		                                    	<!-- 삭제 버튼 -->
+				                                <a href="/board/deleteBoard.do?board_num=${board.board_num}" class="btn btn-danger btn-circle">
+			                                        <i class="fas fa-trash"></i>
+			                                    </a>
+								            	<!-- 수정 버튼 -->
+				                                <a href="#" class="btn btn-warning btn-circle">
+			                                        <i class="fas fa-edit"></i>
+			                                    </a>
+								            </c:if>
+								            <!-- 목록 버튼 -->
+			                                <a href="/board/showList.do?page=${page}" class="btn btn-primary btn-circle">
+		                                        <i class="fas fa-list"></i>
+		                                    </a>
+		                                </div>
 			                        </div>
 			                    </div>
 			                </div>

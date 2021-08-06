@@ -25,9 +25,17 @@
 
     <!-- Custom styles for this page -->
     <link href="../../resources/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
 </head>
 
 <body id="page-top">
+
+	<c:if test="${success > 0}">
+		<script type="text/javascript">
+			alert('정상적으로 삭제되었습니다 :)');
+		</script>
+	</c:if>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -56,7 +64,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-hover" width="100%" cellspacing="0">
                                     <thead>
                                         <tr class="text-center">
                                             <th> 번호 </th>
@@ -67,14 +75,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<% int number = 0; %>
-                                    	<c:forEach items="${list}" var="boardVO">
-                                    		<% number++; %>
-                                    		<tr onClick="location.href='/board/readBoard.do?board_num=${boardVO.board_num}'" 
-                                    				onMouseOver = "window.status='/board/readBoard.do?board_num=${boardVO.board_num}'" 
+                                    	<c:forEach items="${list}" var="boardVO">                                    		
+                                    		<tr onClick="location.href='/board/readBoard.do${pageMaker.makeQuery(pageMaker.cri.page)}&board_num=${boardVO.board_num}'" 
+                                    				onMouseOver = "window.status='/board/readBoard.do${pageMaker.makeQuery(pageMaker.cri.page)}&board_num=${boardVO.board_num}'" 
                                     				onMouseOut = "window.status=''"
                                     				style="cursor:pointer;">
-	                                            <td class="text-center"> <%=number%> </td>
+	                                            <td class="text-center"> ${boardVO.board_num} </td>
 	                                            <td> ${boardVO.title} </td>
 	                                            <td class="text-center"> ${boardVO.user_name} </td>
 	                                            <td class="text-center"> ${boardVO.board_time} </td>
@@ -84,7 +90,49 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                            <nav aria-label="Page navigation example">
+                            	<ul class="pagination justify-content-center">                            	
+	                            	<c:choose>
+	                            		<c:when test="${pageMaker.prev}">
+											<li class="page-item">
+										    	<a class="page-link" href="/board/showList.do?page=${pageMaker.startPage-1}" tabindex="-1"> &laquo; </a>
+										    </li>
+	                            		</c:when>
+	                            		<c:otherwise>
+	                            			<li class="page-item disabled">
+										    	<a class="page-link" href="#" tabindex="-1"> &laquo; </a>
+										    </li>
+	                            		</c:otherwise>
+	                            	</c:choose>
+	                            	
+	                            	<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+	                            		<c:choose>
+	                            			<c:when test="${pageMaker.cri.page == idx}">
+												<li class="page-item active">
+	                            			</c:when>
+	                            			<c:otherwise>
+	                            				<li class="page-item">
+	                            			</c:otherwise>
+	                            		</c:choose>
+			                            			<a class="page-link" href="/board/showList.do?page=${idx}"> ${idx} </a>
+												</li>
+	                           		</c:forEach>
+	                           		
+	                           		<c:choose>
+	                            		<c:when test="${pageMaker.next && pageMaker.endPage > 0}">
+											<li class="page-item">
+										    	<a class="page-link" href="/board/showList.do?page=${pageMaker.endPage + 1}" tabindex="-1"> &raquo; </a>
+										    </li>
+	                            		</c:when>
+	                            		<c:otherwise>
+	                            			<li class="page-item disabled">
+										    	<a class="page-link" href="#" tabindex="-1"> &raquo; </a>
+										    </li>
+	                            		</c:otherwise>
+	                            	</c:choose>
+                           		</ul>
+							</nav>
+						</div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -122,13 +170,6 @@
 
     <!-- Custom scripts for all pages-->
     <script src="../../resources/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="../../resources/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="../../resources/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="../../resources/js/demo/datatables-demo.js"></script>
 
 </body>
 </html>

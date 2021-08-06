@@ -9,20 +9,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES(#{user_id}, #{title}, #{content}, now())
 	</insert>
 	
-	<select id="selectBoards" resultType="BoardVO">
+	<select id="selectBoards" parameterType="Criteria" resultType="BoardVO">
 		SELECT board_num, 
 			   user_name, 
 		       title,
-		       IF(DATEDIFF(IFNULL(update_time, board_time), NOW()) > 0, 
-					CONCAT(ABS(DATEDIFF(IFNULL(update_time, board_time), NOW())) + 1, '일 전'),
-		            TIME_FORMAT(TIMEDIFF(NOW(), IFNULL(update_time, board_time)), '%H시간 %i분 전')) AS board_time,
+		       IF(TIMESTAMPDIFF(SECOND, IFNULL(update_time, board_time), NOW()) >= 86400, 
+					CONCAT(ABS(DATEDIFF(IFNULL(update_time, board_time), NOW())), '일 전'),
+					TIME_FORMAT(TIMEDIFF(NOW(), IFNULL(update_time, board_time)), '%H시간 %i분 전')) AS board_time,
+			   IFNULL(update_time, board_time) as order_standard,
 		       views
 		FROM board join users using(user_id)
-		ORDER BY board_time
+		ORDER BY order_standard DESC
+		LIMIT #{pageStart}, #{perPageNum}
+	</select>
+	
+	<select id="countPaging" resultType="int">
+		<![CDATA[
+			SELECT COUNT(board_num)
+			FROM board
+			WHERE board_num > 0
+		]]>
 	</select>
 	
 	<select id="selectBoard" parameterType="int" resultType="BoardVO">
-		SELECT user_name, 
+		SELECT board_num,
+			   user_id,
+			   user_name, 
 			   title,
 			   content, 
 			   DATE_FORMAT(IFNULL(update_time, board_time), '%Y년 %m월 %d일  %I시 %i분 %S초') AS board_time,
@@ -36,4 +48,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET views = views + 1
 		WHERE board_num = #{value}
 	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE FROM board
+		WHERE board_num = #{value}
+	</delete>
+	
 </mapper>
