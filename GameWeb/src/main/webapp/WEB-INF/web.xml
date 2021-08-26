@@ -33,6 +33,7 @@
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	
+	
 	<!-- 인코딩 문제 해결 -->
 	<filter>
 		<filter-name> encoding </filter-name>

@@ -9,6 +9,8 @@ public class BoardVO {
 	private String board_time;
 	private String update_time;
 	private int views;
+
+	private boolean isUpdate;
 	
 	public int getBoard_num() {
 		return board_num;
@@ -58,4 +60,12 @@ public class BoardVO {
 	public void setViews(int views) {
 		this.views = views;
 	}
+	public boolean getIsUpdate() {
+		return isUpdate;
+	}
+	public void setIsUpdate(boolean isUpdate) {
+		this.isUpdate = isUpdate;
+	}
+	
+	
 }

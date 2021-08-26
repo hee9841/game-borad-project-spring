@@ -59,4 +59,11 @@ public class BoardDAOImpl implements BoardDAO {
 		return session.delete(namespace+".deleteBoard", board_num);
 	}
 	
+	@Override
+	public int modifyBoard(BoardVO boardVO) throws Exception {
+		
+		return session.update(namespace+".modifyBoard", boardVO);
+	}
+
+	
 }

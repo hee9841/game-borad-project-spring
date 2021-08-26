@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       views
 		FROM board join users using(user_id)
 		ORDER BY order_standard DESC
-		LIMIT #{pageStart}, #{perPageNum}
+		LIMIT #{pageStart}, #{perPageNum}ORDER BY board_num
 	</select>
 	
 	<select id="countPaging" resultType="int">
@@ -53,5 +53,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM board
 		WHERE board_num = #{value}
 	</delete>
+	
+	<update id="modifyBoard" parameterType="BoardVO">
+		UPDATE board
+		SET title = #{title},
+		content = #{content},
+		update_time = now()
+		WHERE board_num = #{board_num}
+	</update>
 	
 </mapper>

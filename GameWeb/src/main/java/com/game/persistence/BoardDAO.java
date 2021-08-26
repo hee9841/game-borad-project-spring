@@ -18,5 +18,7 @@ public interface BoardDAO {
 	public int addViews(int board_num) throws Exception;
 	
 	public int deleteBoard(int board_num) throws Exception;
+
+	int modifyBoard(BoardVO boardVO) throws Exception;
 	
 }

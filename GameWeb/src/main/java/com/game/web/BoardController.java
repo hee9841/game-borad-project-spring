@@ -54,7 +54,7 @@ public class BoardController {
 		
 		boardService.addViews(board_num);									// 조회수 1회 올리기
 		
-		model.addAttribute("board", boardService.selectBoard(board_num));	
+		model.addAttribute("board", boardService.selectBoard(board_num));
 		model.addAttribute("page", cri.getPage());
  		return "/board/readBoard";
 	}
@@ -66,5 +66,41 @@ public class BoardController {
 		rttr.addAttribute("page", cri.getPage());
 		
 		return "redirect:/board/showList.do";
+	}
+	
+	
+	/**
+	 * 
+	 * @param board_num
+	 * @param model
+	 * @param request
+	 * @param boardVO
+	 * @param cri
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/modifyBoard.do", method = RequestMethod.GET)
+	public String updateBoardGET(int board_num, Model model, HttpSession request, Criteria cri) throws Exception{
+		
+
+		model.addAttribute("board", boardService.selectBoard(board_num));
+		model.addAttribute("cri", cri);
+
+		return "/board/modifyBoard";
+	}
+	
+	
+	@RequestMapping(value="/modifyBoard.do", method = RequestMethod.POST)
+	public String updateBoarPost(Model model, HttpSession request, BoardVO boardVO, Criteria cri, RedirectAttributes rttr) throws Exception{
+
+		boardVO.setIsUpdate(true);
+		boardService.modifyBoard(boardVO);
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
+		
+		rttr.addFlashAttribute("msg", "Modify SUCCESS");
+		
+		return "redirect:/board/showList.do";
+
 	}
 }

@@ -102,8 +102,6 @@ public class KakaoRestApi {
 			
 			final HttpResponse response = client.execute(post);
 			final int responseCode = response.getStatusLine().getStatusCode();
-			System.out.println("\nSending 'POST request to URL : " + RequestUrl);
-			System.out.println("Response Code : " + responseCode);
 			
 			
 			ObjectMapper mapper = new ObjectMapper();

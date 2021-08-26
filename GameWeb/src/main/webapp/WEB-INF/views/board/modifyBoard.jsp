@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +27,36 @@
     <link href="../../resources/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+    	    
+    <script type=text/javascript>
+    	$(document).ready(function() {
+    		$("#btnModify").click(modifyBoard);
+    	});
+    	
+    	modifyBoard = function() {
+    		var frm = document.writeBoard_frm;
+    	 	var title = frm.title;
+    	 	var content = frm.content;
+    	 	
+    	 	if(title.value.length < 1 || content.value.length < 1) {
+    	 		alert('입력되지 않은 항목이 있습니다.');
+    	 		return;
+    	 	} else {
+    	 		frm.action = '/board/modifyBoard.do';
+    	 		frm.submit();
+    	 	}
+    	}
+    
+		function fnChkText(obj) {
+			var str = obj.value;
+			$("#counter").html("(" + str.length + "자/1000자)");
+			
+			if(str.length > 1000) {
+				obj.value = str.substr(0,1000);
+				$("#counter").html("(1000자/1000자)");
+			}
+		}
+	</script>
 </head>
 
 <body id="page-top">
@@ -43,6 +74,13 @@
 
                	<jsp:include page="/WEB-INF/views/include/topBar.jsp"/> 	<!-- TopBar include -->
                	
+            	<c:if test="${empty userInfo}">
+            		<script type="text/javascript">
+            			alert('로그인 후 접근 가능한 메뉴입니다. 로그인 또는 회원가입 해주세요:)');
+            			window.location.href = '/login/login.do';
+            		</script>
+            	</c:if>
+
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 					<div class="container">
@@ -52,47 +90,27 @@
 			                <div class="row">
 			                    <div class="col-lg-12">
 			                        <div class="p-5">
-			                            <table class="table table-striped" width="100%" cellspacing="0">
-			                            	<thead>
-			                            		<tr class="text-center">
-		                                            <th class="table-primary"> 제목 </th>
-		                                            <td colspan="3"> ${board.title} </td>
-		                                        </tr>
-	                                    		<tr class="text-center">
-		                                            <th class="table-primary"> 작성자 </th>
-		                                            <td colspan="3"> ${board.user_name} </td>
-		                                        </tr>
-		                                        <tr class="text-center">
-		                                            <th class="table-primary"> 작성시간 </th>
-		                                            <td> ${board.board_time} </td>
-		                                            <th class="table-primary"> 조회수 </th>
-		                                            <td> ${board.views} </td>
-		                                        </tr>
-		                                        <tr class="text-center">
-		                                        	<th colspan="4" class="table-primary"> 내용 </th>
-		                                        </tr>
-			                            	</thead>
-		                                    <tbody>
-			                                    <td colspan="4"> ${board.content} </td>
-		                                    </tbody>
-		                                </table>
-		                                
-		                                <div class="text-right">
-		                                    <c:if test="${sessionScope.userInfo.user_id == board.user_id}">
-		                                    	<!-- 삭제 버튼 -->
-				                                <a href="/board/deleteBoard.do?board_num=${board.board_num}" class="btn btn-danger btn-circle">
-			                                        <i class="fas fa-trash"></i>
-			                                    </a>
-								            	<!-- 수정 버튼 -->
-				                                <a href="/board/modifyBoard.do?board_num=${board.board_num}" class="btn btn-warning btn-circle">
-			                                        <i class="fas fa-edit"></i>
-			                                    </a>
-								            </c:if>
-								            <!-- 목록 버튼 -->
-			                                <a href="/board/showList.do?page=${page}" class="btn btn-primary btn-circle">
-		                                        <i class="fas fa-list"></i>
-		                                    </a>
-		                                </div>
+			                        	<div class="text-center">
+			                                <h1 class="h4 text-gray-900 mb-4"> 글 수정 </h1>
+			                            </div>
+			                            
+			                            <form method="post" class="modfiyBoard" name="writeBoard_frm" onsubmit="return false;">
+			                            	<input type="hidden" name='page' value="${cri.page}">
+			                            	<input type="hidden" name='page' value="${cri.perPageNum}">
+			                            	<input type="hidden" name=board_num value="${board.board_num}">
+			                               	<div class="form-group">
+			                                    <input type="text" class="form-control form-control-user" id="title" name="title"
+			                                    value="${board.title}">
+			                                </div>
+			                                <div class="form-group">
+			                                	<textarea class="form-control" rows="20" style="resize: none;" id="content" name="content"
+			                                	 onKeyUp="javascript:fnChkText(this)">${board.content}</textarea>
+			                                	<span style="color:#aaa;" id="counter">(${fn:length(board.content)}자/1000자)</span>
+			                                </div>
+			                                <button type="submit" class="btn btn-primary btn-user btn-block" id="btnModify">
+			                                	수정
+			                                </button>
+			                            </form>
 			                        </div>
 			                    </div>
 			                </div>

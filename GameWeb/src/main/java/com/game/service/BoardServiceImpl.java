@@ -55,4 +55,10 @@ public class BoardServiceImpl implements BoardService {
 		return boardDAO.deleteBoard(board_num);
 	}
 
+
+	public int modifyBoard(BoardVO boardVO) throws Exception {
+		// TODO Auto-generated method stub
+		return boardDAO.modifyBoard(boardVO);
+	}
+
 }

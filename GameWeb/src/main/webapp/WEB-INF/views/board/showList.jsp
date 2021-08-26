@@ -28,6 +28,11 @@
     
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
 </head>
+<style>
+	#heading {
+		margin:0px;
+	}
+</style>
 
 <body id="page-top">
 
@@ -60,7 +65,12 @@
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary"> 게시판 </h6>
+                        	<div class="container" id="heading">
+                        		<div class="row">
+                        			<div class="col-10"><h6 class="m-0 font-weight-bold text-primary"> 게시판 </h6></div>
+                        			<div class="col-2"><a class="btn btn-primary btn-sm" href="/board/createBoard.do" role="button">글쓰기</a></div>
+                        		</div>
+                        	</div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

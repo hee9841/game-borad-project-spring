@@ -72,7 +72,6 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header"> Chat: </h6>
-                        <a class="collapse-item" href="/board/createBoard.do"> 글쓰기 </a>
                         <a class="collapse-item" href="/board/showList.do?page=1"> 게시판 </a>
                     </div>
                 </div>
