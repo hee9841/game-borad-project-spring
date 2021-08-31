@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       views
 		FROM board join users using(user_id)
 		ORDER BY order_standard DESC
-		LIMIT #{pageStart}, #{perPageNum}ORDER BY board_num
+		LIMIT #{pageStart}, #{perPageNum} 
 	</select>
 	
 	<select id="countPaging" resultType="int">
